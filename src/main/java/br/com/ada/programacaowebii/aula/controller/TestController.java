@@ -1,4 +1,4 @@
-package br.com.ada.programacaowebii.aula.data.controllers;
+package br.com.ada.programacaowebii.aula.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
