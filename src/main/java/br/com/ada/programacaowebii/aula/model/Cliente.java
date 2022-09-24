@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -21,7 +22,7 @@ public class Cliente {
     @Column(nullable = false)
     private String cpf;
 
-    @Column(nullable = false)
-    private Integer idade;
+    @Column(nullable = false, name = "data_nascimento", columnDefinition = "DATE")
+    private LocalDate dataNascimento;
 
 }
