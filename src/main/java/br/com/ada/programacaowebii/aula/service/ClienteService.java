@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -48,6 +49,14 @@ public class ClienteService {
 
     public List<Cliente> listarClientesPorNome(String nome) {
         return this.clienteRepository.findByNomeContaining(nome);
+    }
+
+    public List<Cliente> listarClientesPorNomeOuDataNascimentoOrdenadoPorNome(String nome, LocalDate dataNascimento) {
+        return this.clienteRepository.findByNomeContainingOrDataNascimentoOrderByNomeAsc(nome, dataNascimento);
+    }
+
+    public List<Cliente> listarClientesPorPeriodo(LocalDate dataInicial, LocalDate dataFinal) {
+        return this.clienteRepository.findByDataNascimentoBetween(dataInicial, dataFinal);
     }
 
 }
