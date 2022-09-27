@@ -113,6 +113,45 @@ public class ClienteController {
         return ResponseEntity.ok(clienteDTOS);
     }
 
+    @GetMapping("/cliente-por-cpf/{cpf}")
+    public ResponseEntity<ClienteDTO> buscarClientePorCpf(@PathVariable("cpf") String cpf) {
+        Optional<Cliente> optionalCliente = this.clienteService.buscarClientePorCpf(cpf);
+        if (optionalCliente.isPresent()) {
+            Cliente cliente = optionalCliente.get();
+            ClienteDTO clienteDTO = new ClienteDTO();
+            clienteDTO.setNome(cliente.getNome());
+            clienteDTO.setCpf(cliente.getCpf());
+            clienteDTO.setDataNascimento(cliente.getDataNascimento());
+            return ResponseEntity.ok(clienteDTO);
+        }
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+
+    @PutMapping("/cliente-por-cpf")
+    public ResponseEntity<ClienteDTO> atualizarClientePorCpf(@RequestBody ClienteVO clienteVO) {
+        Cliente cliente = this.clienteService.atualizarCliente(clienteVO);
+        if (Objects.nonNull(cliente)) {
+            ClienteDTO clienteDTO = new ClienteDTO();
+            clienteDTO.setNome(cliente.getNome());
+            clienteDTO.setCpf(cliente.getCpf());
+            clienteDTO.setDataNascimento(cliente.getDataNascimento());
+            return ResponseEntity.ok().body(clienteDTO);
+        }
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    @DeleteMapping("/cliente-por-cpf/{cpf}")
+    public ResponseEntity<String> removerClientePorId(@PathVariable("cpf") String cpf) {
+        Optional<Cliente> optionalCliente = this.clienteService.buscarClientePorCpf(cpf);
+        if (optionalCliente.isPresent()) {
+            Cliente cliente = optionalCliente.get();
+            this.clienteService.removerClientePorId(cliente.getId());
+            return ResponseEntity.ok("Cliente removido!");
+        }
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
     private List<ClienteDTO> convertendoClienteInClienteDTO(List<Cliente> clientes) {
         List<ClienteDTO> clienteDTOS = clientes.stream()
                 .map(cliente -> {

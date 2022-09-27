@@ -6,7 +6,6 @@ import br.com.ada.programacaowebii.aula.repository.ClienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -39,6 +38,20 @@ public class ClienteService {
         return null;
     }
 
+    public Cliente atualizarCliente(ClienteVO dadosAtualizadosCliente) {
+        Optional<Cliente> optionalCliente = this.clienteRepository.findByCpf(dadosAtualizadosCliente.getCpf());
+        if (optionalCliente.isPresent()) {
+            Cliente cliente = optionalCliente.get();
+            Cliente clienteAtualizado = new Cliente();
+            clienteAtualizado.setId(cliente.getId());
+            clienteAtualizado.setNome(dadosAtualizadosCliente.getNome());
+            clienteAtualizado.setCpf(dadosAtualizadosCliente.getCpf());
+            clienteAtualizado.setDataNascimento(dadosAtualizadosCliente.getDataNascimento());
+            return this.clienteRepository.save(clienteAtualizado);
+        }
+        return null;
+    }
+
     public void removerClientePorId(Long id){
         this.clienteRepository.deleteById(id);
     }
@@ -57,6 +70,16 @@ public class ClienteService {
 
     public List<Cliente> listarClientesPorPeriodo(LocalDate dataInicial, LocalDate dataFinal) {
         return this.clienteRepository.findByDataNascimentoBetween(dataInicial, dataFinal);
+    }
+
+    public Optional<Cliente> buscarClientePorCpf(String cpf) {
+        //return this.clienteRepository.findByCpf(cpf);
+        //return this.clienteRepository.buscarClientePorCpfParametroIndexado(cpf);
+        return this.clienteRepository.buscarClientePorCpfParametroNominal(cpf);
+    }
+
+    public void removerClientePorCpf(String cpf){
+        this.clienteRepository.deleteByCpf(cpf);
     }
 
 }
