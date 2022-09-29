@@ -19,7 +19,6 @@ public class Cliente {
     @Column(nullable = false, length = 100)
     private String nome;
 
-    //@Pattern(regexp="\\d{11}", message="ATENÇÃO: Deve ser informado 11 dígitos!")
     @Column(nullable = false, unique = true, length = 11)
     private String cpf;
 

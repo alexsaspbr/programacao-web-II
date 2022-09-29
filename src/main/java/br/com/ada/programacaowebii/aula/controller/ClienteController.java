@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
@@ -23,7 +24,7 @@ public class ClienteController {
     private ClienteService clienteService;
 
     @PostMapping("/cliente")
-    public String criarCliente(@RequestBody ClienteVO clienteVO){
+    public String criarCliente(@Valid @RequestBody ClienteVO clienteVO){
         Cliente cliente = new Cliente();
         cliente.setNome(clienteVO.getNome());
         cliente.setCpf(clienteVO.getCpf());
