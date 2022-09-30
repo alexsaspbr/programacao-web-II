@@ -3,6 +3,7 @@ package br.com.ada.programacaowebii.aula.controller;
 import br.com.ada.programacaowebii.aula.controller.dto.ClienteDTO;
 import br.com.ada.programacaowebii.aula.controller.vo.ClienteVO;
 import br.com.ada.programacaowebii.aula.model.Cliente;
+import br.com.ada.programacaowebii.aula.model.Conta;
 import br.com.ada.programacaowebii.aula.service.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -29,6 +31,17 @@ public class ClienteController {
         cliente.setNome(clienteVO.getNome());
         cliente.setCpf(clienteVO.getCpf());
         cliente.setDataNascimento(clienteVO.getDataNascimento());
+        List<Conta> contas = new ArrayList<>();
+        if(!clienteVO.getContas().isEmpty()){
+            contas = clienteVO.getContas().stream().map(contaVO -> {
+                Conta conta = new Conta();
+                conta.setNumero(contaVO.getNumero());
+                conta.setDataCriacao(contaVO.getDataCriacao());
+                conta.setSaldo(contaVO.getSaldo());
+                return conta;
+            }).collect(Collectors.toList());
+        }
+        cliente.setContas(contas);
         clienteService.criarCliente(cliente);
         return "Cliente criado!";
     }

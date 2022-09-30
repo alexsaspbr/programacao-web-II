@@ -6,6 +6,7 @@ import lombok.Data;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -17,5 +18,7 @@ public class ClienteVO {
     private String cpf;
     //TODO - @Pattern(regexp="", message = "")
     private LocalDate dataNascimento;
-    
+
+    private List<ContaVO> contas;
+
 }
