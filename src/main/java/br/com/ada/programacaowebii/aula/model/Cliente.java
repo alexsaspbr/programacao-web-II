@@ -26,6 +26,9 @@ public class Cliente {
     @Column(nullable = false, name = "data_nascimento", columnDefinition = "DATE")
     private LocalDate dataNascimento;
 
+    @Column(length = 100)
+    private String apelido;
+
     @OneToMany(mappedBy = "cliente")
     private List<Conta> contas;
 

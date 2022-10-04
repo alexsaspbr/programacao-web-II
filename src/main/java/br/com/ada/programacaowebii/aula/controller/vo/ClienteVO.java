@@ -5,6 +5,7 @@ import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Past;
+import javax.validation.constraints.PastOrPresent;
 import javax.validation.constraints.Pattern;
 import java.time.LocalDate;
 import java.util.List;
@@ -17,9 +18,6 @@ public class ClienteVO {
     private String nome;
     @Pattern(regexp="\\d{11}", message = "ATENÇÃO: Deve ser informado 11 dígitos!")
     private String cpf;
-    @Past(message = "Data de nascimento inválida!")
+    @PastOrPresent(message = "Data de nascimento inválida!")
     private LocalDate dataNascimento;
-
-    private List<ContaVO> contas;
-
 }

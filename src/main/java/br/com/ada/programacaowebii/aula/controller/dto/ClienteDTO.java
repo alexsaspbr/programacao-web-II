@@ -13,6 +13,5 @@ public class ClienteDTO {
     private String nome;
     private String cpf;
     private LocalDate dataNascimento;
-    private List<ContaDTO> contas;
 
 }
