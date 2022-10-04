@@ -5,6 +5,11 @@ import br.com.ada.programacaowebii.aula.controller.vo.ClienteVO;
 import br.com.ada.programacaowebii.aula.model.Cliente;
 import br.com.ada.programacaowebii.aula.model.Conta;
 import br.com.ada.programacaowebii.aula.service.ClienteService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -25,8 +30,20 @@ public class ClienteController {
     @Autowired
     private ClienteService clienteService;
 
+    @Operation(summary = "<strong>Criar cliente</strong>", tags = "cliente")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Created"),
+            @ApiResponse(responseCode = "400", description = "Bad Request"),
+            @ApiResponse(responseCode = "422", description = "Bad Request",
+                    content = {
+                        @Content(mediaType = "application/json",
+                    schema = @Schema(implementation = ClienteDTO.class))
+                    }
+            )
+
+    })
     @PostMapping("/cliente")
-    public String criarCliente(@Valid @RequestBody ClienteVO clienteVO){
+    public ResponseEntity<String> criarCliente(@Valid @RequestBody ClienteVO clienteVO){
         Cliente cliente = new Cliente();
         cliente.setNome(clienteVO.getNome());
         cliente.setCpf(clienteVO.getCpf());
@@ -43,7 +60,7 @@ public class ClienteController {
         }
         cliente.setContas(contas);
         clienteService.criarCliente(cliente);
-        return "Cliente criado!";
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @GetMapping("/cliente/{id}")
