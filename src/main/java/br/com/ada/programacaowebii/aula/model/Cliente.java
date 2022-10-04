@@ -26,11 +26,7 @@ public class Cliente {
     @Column(nullable = false, name = "data_nascimento", columnDefinition = "DATE")
     private LocalDate dataNascimento;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinTable(name = "cliente_tem_contas",
-                joinColumns = @JoinColumn(name = "cliente_id"),
-                inverseJoinColumns = @JoinColumn(name = "conta_id")
-    )
+    @OneToMany(mappedBy = "cliente")
     private List<Conta> contas;
 
 }

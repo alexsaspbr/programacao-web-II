@@ -26,7 +26,8 @@ public class Conta {
     @Column(precision = 16, scale = 2)
     private BigDecimal saldo;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "cliente_id")
     private Cliente cliente;
 
 }
