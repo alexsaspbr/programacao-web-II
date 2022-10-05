@@ -17,7 +17,7 @@ public class ClienteService {
     private ClienteRepository clienteRepository;
 
     public Cliente criarCliente(Cliente cliente) {
-        return this.clienteRepository.saveAndFlush(cliente);
+        return this.clienteRepository.save(cliente);
     }
 
     public Optional<Cliente> buscarClientePorId(Long id) {

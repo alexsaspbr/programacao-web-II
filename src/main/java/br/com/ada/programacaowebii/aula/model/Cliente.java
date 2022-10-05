@@ -5,7 +5,6 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.List;
 
 @Getter
 @Setter
@@ -25,8 +24,5 @@ public class Cliente {
 
     @Column(nullable = false, name = "data_nascimento", columnDefinition = "DATE")
     private LocalDate dataNascimento;
-
-    @OneToMany(mappedBy = "cliente")
-    private List<Conta> contas;
 
 }

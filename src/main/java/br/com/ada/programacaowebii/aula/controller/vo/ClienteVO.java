@@ -4,10 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Past;
 import javax.validation.constraints.Pattern;
 import java.time.LocalDate;
-import java.util.List;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -17,9 +15,7 @@ public class ClienteVO {
     private String nome;
     @Pattern(regexp="\\d{11}", message = "ATENÇÃO: Deve ser informado 11 dígitos!")
     private String cpf;
-    @Past(message = "Data de nascimento inválida!")
+    //TODO - @Pattern(regexp="", message = "")
     private LocalDate dataNascimento;
-
-    private List<ContaVO> contas;
-
+    
 }
