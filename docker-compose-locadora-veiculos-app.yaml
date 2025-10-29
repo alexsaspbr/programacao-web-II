@@ -19,18 +19,19 @@ services:
       context: .
     depends_on:
       - db
+      - zipkin
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/postgres
       - SPRING_DATASOURCE_USERNAME=postgres
       - SPRING_DATASOURCE_PASSWORD=postgres
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
     deploy:
-      replicas: 3  # 3 réplicas da aplicação
+      replicas: 6  # 3 réplicas da aplicação
       restart_policy:
         condition: on-failure
       resources:
         limits:
-          cpus: '2'  # Limite de CPU por réplica (ajuste conforme hardware)
+          cpus: '1.5'  # Limite de CPU por réplica (ajuste conforme hardware)
           memory: 1G  # Limite de memória por réplica
     networks:
       - app-network
@@ -39,7 +40,7 @@ services:
     image: nginx:latest
     container_name: nginx-reverse-proxy
     volumes:
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./infra/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
     ports:
       - "80:80"
     depends_on:
@@ -53,7 +54,7 @@ services:
     depends_on:
       - app
     volumes:
-      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./infra/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
     ports:
       - "9090:9090"
     command:
@@ -66,7 +67,7 @@ services:
     container_name: grafana
     volumes:
       - grafana-storage:/var/lib/grafana
-      - ./grafana/provisioning/:/etc/grafana/provisioning/
+      - ./infra/grafana/provisioning/:/etc/grafana/provisioning/
     ports:
       - "3000:3000"
     depends_on:
@@ -74,6 +75,20 @@ services:
     environment:
       - GF_SECURITY_ADMIN_USER=admin
       - GF_SECURITY_ADMIN_PASSWORD=admin
+    networks:
+      - app-network
+
+  zipkin:
+    image: openzipkin/zipkin
+    hostname: zipkin
+    container_name: zipkin
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: '0.5GB'
+    ports:
+      - "9411:9411"
     networks:
       - app-network
 

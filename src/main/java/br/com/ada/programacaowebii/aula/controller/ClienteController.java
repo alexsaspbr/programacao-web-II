@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -23,6 +24,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+@Slf4j
 @RestController
 //@SecurityRequirement(name="conta-bancaria-api")
 public class ClienteController {
@@ -92,6 +94,7 @@ public class ClienteController {
 
     @GetMapping("/clientes")
     public ResponseEntity<List<ClienteDTO>> listarTodosClientes() {
+        log.info("[method]");
         List<Cliente> clientes = this.clienteService.listarTodosClientes();
         if (clientes.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
